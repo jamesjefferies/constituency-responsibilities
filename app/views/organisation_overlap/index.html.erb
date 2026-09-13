@@ -2,6 +2,8 @@
 
 <%= render :partial => 'organisation/subnav' %>
 
+<%= render :partial => 'library_design/feeds/feeds' %>
+
 <% unless @constituencies.empty? %>
 	<ol class="unnumbered link-list">
 		<%= render :partial => 'constituency', :collection => @constituencies %>
