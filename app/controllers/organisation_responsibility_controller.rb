@@ -10,6 +10,7 @@ class OrganisationResponsibilityController < ApplicationController
           SELECT
             cr.*,
             ca.name AS constituency_name,
+            ca.geographic_code AS constituency_geographic_code,
             r.label AS responsibility_label,
             caoo.constituency_area_population_overlap AS population_overlap
           FROM
@@ -28,15 +29,24 @@ class OrganisationResponsibilityController < ApplicationController
       ]
     )
     
-    @parent_organisation = Organisation.find( @organisation.parent_organisation_id ) if @organisation.parent_organisation_id
+    respond_to do |format|
+      format.csv {
+        csv_response_headers( "#{@organisation.label} responsibilities" )
+      }
+      format.html {
+      
+        @parent_organisation = Organisation.find( @organisation.parent_organisation_id ) if @organisation.parent_organisation_id
     
-    @page_title = "#{@organisation.label} - responsibilities"
-    @multiline_page_title = "#{@organisation.label} <span class='subhead'>Constituency responsibilities</span>".html_safe
-    @description = "#{@organisation.label} constituency responsibilities."
-    @crumb << { label: 'Organisations', url: organisation_list_url }
-    @crumb << { label: @organisation.label, url: organisation_show_url }
-    @crumb << { label: 'Responsibilities', url: nil }
-    @section = 'organisations'
-    @subsection = 'responsibilities'
+        @page_title = "#{@organisation.label} - responsibilities"
+        @multiline_page_title = "#{@organisation.label} <span class='subhead'>Constituency responsibilities</span>".html_safe
+        @description = "#{@organisation.label} constituency responsibilities."
+        @csv_url = organisation_responsibility_list_url( :format => 'csv' )
+        @crumb << { label: 'Organisations', url: organisation_list_url }
+        @crumb << { label: @organisation.label, url: organisation_show_url }
+        @crumb << { label: 'Responsibilities', url: nil }
+        @section = 'organisations'
+        @subsection = 'responsibilities'
+      }
+    end
   end
 end
