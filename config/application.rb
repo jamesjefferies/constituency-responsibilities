@@ -14,6 +14,8 @@ require "action_view/railtie"
 # require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
+require "mcp"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -22,6 +24,12 @@ module ConsituencyResponsibilies
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
+    
+    # The MCP server is built once at boot (config/routes.rb) and holds references to the tool classes in app/tools,
+    # so code reloading is disabled; restart the server after changing tool or resource code.
+    # A reloading app would need `config.to_prepare` and a way to swap the transport's server instead.
+    config.enable_reloading = false
+    config.eager_load = true
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

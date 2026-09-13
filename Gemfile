@@ -40,6 +40,7 @@ gem "library_design", github: "ukparliament/design-assets", glob: "library_desig
 gem "irb"
 gem "dotenv-rails"
 gem "lograge"
+gem "mcp"
 
 group :development do
   gem "annotaterb"

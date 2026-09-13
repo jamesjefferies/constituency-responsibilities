@@ -4,6 +4,8 @@
 
 <%= list_item_count_sentence( 'responsibility', @responsibilities.size ) %>
 
+<%= render :partial => 'library_design/feeds/feeds' %>
+
 <ol class="unnumbered link-list">
 	<%= render :partial => 'organisation_responsibility/responsibility', :collection => @responsibilities %>
 </ol>
