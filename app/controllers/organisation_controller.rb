@@ -3,10 +3,18 @@ class OrganisationController < ApplicationController
   def index
     @organisations = Organisation.all.order( 'label' )
     
-    @page_title = "Organisations"
-    @description = "Organisations."
-    @crumb << { label: @page_title, url: nil }
-    @section = 'organisations'
+    respond_to do |format|
+      format.csv {
+        csv_response_headers( "organisations" )
+      }
+      format.html {
+        @page_title = "Organisations"
+        @description = "Organisations."
+        @csv_url = organisation_list_url( :format => 'csv' )
+        @crumb << { label: @page_title, url: nil }
+        @section = 'organisations'
+      }
+    end
   end
   
   def show
@@ -42,6 +50,7 @@ class OrganisationController < ApplicationController
     @page_title = "#{@organisation.label} - responsibilities"
     @multiline_page_title = "#{@organisation.label} <span class='subhead'>Constituency responsibilities</span>".html_safe
     @description = "#{@organisation.label} constituency responsibilities."
+    @csv_url = organisation_responsibility_list_url( :format => 'csv' )
     @crumb << { label: 'Organisations', url: organisation_list_url }
     @crumb << { label: @organisation.label, url: nil }
     @section = 'organisations'
